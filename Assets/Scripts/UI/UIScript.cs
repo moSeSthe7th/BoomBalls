@@ -1,0 +1,142 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class UIScript : MonoBehaviour
+{
+    // Buttons for Sprite Arrays (Used Colors): 
+    //  0: Settings
+    //  1: Levels
+    //  2: Sound On
+    //  3: Sound Off
+    //  4: Exit Button
+    //  5: Epmty Circle
+    //  6: Next Level
+    //  7: Restart
+    
+    public Sprite[] redUI;
+    public Sprite[] orangeUI;
+    public Sprite[] yellowUI;
+    public Sprite[] greenUI;
+    public Sprite[] blueUI;
+    public Sprite[] purpleUI;
+    public Sprite[] pinkUI;
+
+    public Button settingsButton;
+    public Button levelSelectorButton;
+    public Button voiceToggler;
+    public Button exitButton;
+    public Button nextLevelButton;
+    public Button restartButton;
+
+    public Image ballCounterImage;
+    
+    private Sprite[] usedColors;
+
+    public GameObject settingsPanel;
+    public GameObject backgroundPanel;
+    public GameObject levelsPanel;
+    public GameObject levelAccomplishedPanel;
+    public GameObject gameOverPanel;
+    public GameObject sphereAndCounterPanel;
+   
+
+
+    private LevelsPanelScript levelsPanelScript;
+
+    void Start()
+    {
+        levelsPanelScript = FindObjectOfType(typeof(LevelsPanelScript)) as LevelsPanelScript;
+        
+    }
+
+    public void InitializeUI(string levelStyle)
+    {
+        switch (levelStyle)
+        {
+            case "Red":
+                usedColors = redUI;
+                break;
+            case "Orange":
+                usedColors = orangeUI;
+                break;
+            case "Yellow":
+                usedColors = yellowUI;
+                break;
+            case "Green":
+                usedColors = greenUI;
+                break;
+            case "Blue":
+                usedColors = blueUI;
+                break;
+            case "Purple":
+                usedColors = purpleUI;
+                break;
+            case "Pink":
+                usedColors = pinkUI;
+                break;
+            default:
+                usedColors = redUI;
+                break;
+        }
+        
+        settingsButton.GetComponent<Image>().sprite = usedColors[0];
+        levelSelectorButton.GetComponent<Image>().sprite = usedColors[1];
+        voiceToggler.GetComponent<Image>().sprite = usedColors[2];
+        exitButton.GetComponent<Image>().sprite = usedColors[4];
+        nextLevelButton.GetComponent<Image>().sprite = usedColors[6];
+        restartButton.GetComponent<Image>().sprite = usedColors[7];
+        ballCounterImage.sprite = usedColors[5];
+
+        settingsPanel.SetActive(false);
+        backgroundPanel.SetActive(false);
+        exitButton.gameObject.SetActive(false);
+        levelsPanel.SetActive(false);
+        levelAccomplishedPanel.SetActive(false);
+        gameOverPanel.SetActive(false);
+    }
+
+    public void OpenSettings()
+    {
+            settingsPanel.SetActive(true);
+            backgroundPanel.SetActive(true);
+            Time.timeScale = 0;
+            DataScript.isGamePaused = true;
+            exitButton.gameObject.SetActive(true);
+            settingsButton.gameObject.SetActive(false);
+    }
+
+    public void CloseButtonPressed()
+    {
+        if (settingsPanel.activeSelf)
+            settingsPanel.SetActive(false);
+        if (levelsPanel.activeSelf)
+            levelsPanel.SetActive(false);
+        if (backgroundPanel.activeSelf)
+            backgroundPanel.SetActive(false);
+        Time.timeScale = 2.5f;
+        DataScript.isGamePaused = false;
+        exitButton.gameObject.SetActive(false);
+        settingsButton.gameObject.SetActive(true);
+        
+    }
+
+    public void OpenLevelsPanel()
+    {
+        if (settingsPanel.activeSelf)
+            settingsPanel.SetActive(false);
+        levelsPanel.SetActive(true);
+        levelsPanelScript.CreateLevelsPanelWithColor(usedColors[5]);
+    }
+
+    public void LevelAccomplished()
+    {
+        levelAccomplishedPanel.SetActive(true);
+    }
+
+    public void GameOver()
+    {
+        gameOverPanel.SetActive(true);
+    }
+}
