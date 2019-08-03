@@ -17,4 +17,8 @@ public static class DataScript
     public static int finishedBoxCount;
 
     public static int ballCount;
+
+    public static Color textColor;
+
+    public static bool gameOverLock;
 }

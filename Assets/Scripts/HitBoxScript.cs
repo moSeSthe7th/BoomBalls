@@ -44,11 +44,12 @@ public class HitBoxScript : MonoBehaviour
         }
 
         congratulationsTextStartingPosHolder = congratulationsText.gameObject.transform.position;
-        congratulationsTextColorHolderAtStart = congratulationsText.color;
+        congratulationsTextColorHolderAtStart = DataScript.textColor;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        
         if(collision.gameObject.tag == "Ball" && count>0)
         {
             boxParticleSystem = Instantiate(boxParticleSystemGameobject, collision.contacts[0].point, Quaternion.identity).GetComponent<ParticleSystem>();

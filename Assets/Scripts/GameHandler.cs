@@ -13,6 +13,7 @@ public class GameHandler : MonoBehaviour
         DataScript.currentLevel = PlayerPrefs.GetInt("Current Level", 1);
         DataScript.maxReachedLevel = PlayerPrefs.GetInt("Max Reached Level", 1);
         DataScript.isGamePaused = false;
+        DataScript.gameOverLock = true;
         Time.timeScale = 2.5f;
         
     }

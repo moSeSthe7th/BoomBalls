@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
 {
+    //To add new sprite, first add it to the public sprite arrays from the editor, then set it in InitializeUI method
+
     // Buttons for Sprite Arrays (Used Colors): 
     //  0: Settings
     //  1: Levels
@@ -14,6 +16,7 @@ public class UIScript : MonoBehaviour
     //  5: Epmty Circle
     //  6: Next Level
     //  7: Restart
+    //  8: Levels Panel Background
     
     public Sprite[] redUI;
     public Sprite[] orangeUI;
@@ -30,6 +33,8 @@ public class UIScript : MonoBehaviour
     public Button nextLevelButton;
     public Button restartButton;
 
+    public Text startingText;
+
     public Image ballCounterImage;
     
     private Sprite[] usedColors;
@@ -40,7 +45,6 @@ public class UIScript : MonoBehaviour
     public GameObject levelAccomplishedPanel;
     public GameObject gameOverPanel;
     public GameObject sphereAndCounterPanel;
-   
 
 
     private LevelsPanelScript levelsPanelScript;
@@ -88,6 +92,7 @@ public class UIScript : MonoBehaviour
         nextLevelButton.GetComponent<Image>().sprite = usedColors[6];
         restartButton.GetComponent<Image>().sprite = usedColors[7];
         ballCounterImage.sprite = usedColors[5];
+        levelsPanel.GetComponent<Image>().sprite = usedColors[8];
 
         settingsPanel.SetActive(false);
         backgroundPanel.SetActive(false);
@@ -95,6 +100,8 @@ public class UIScript : MonoBehaviour
         levelsPanel.SetActive(false);
         levelAccomplishedPanel.SetActive(false);
         gameOverPanel.SetActive(false);
+
+        levelsPanelScript.CreateLevelsPanelWithColor(usedColors[5]);
     }
 
     public void OpenSettings()
@@ -127,16 +134,26 @@ public class UIScript : MonoBehaviour
         if (settingsPanel.activeSelf)
             settingsPanel.SetActive(false);
         levelsPanel.SetActive(true);
-        levelsPanelScript.CreateLevelsPanelWithColor(usedColors[5]);
+        
     }
 
     public void LevelAccomplished()
     {
+        DataScript.gameOverLock = false;
         levelAccomplishedPanel.SetActive(true);
     }
 
     public void GameOver()
     {
         gameOverPanel.SetActive(true);
+    }
+
+    public void GameStarted()
+    {
+        if (startingText.gameObject.activeSelf)
+        {
+            startingText.gameObject.SetActive(false);
+        }
+        
     }
 }
