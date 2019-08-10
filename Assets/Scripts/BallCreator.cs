@@ -29,6 +29,8 @@ public class BallCreator : MonoBehaviour
         counterScript = FindObjectOfType(typeof(InGameBallCounterScript)) as InGameBallCounterScript;
         uIScript = FindObjectOfType(typeof(UIScript)) as UIScript;
 
+        ballShooter.transform.position = DataScript.screenTopCenter;
+
         isCoroutineStarted = false;
     }
 
@@ -42,7 +44,7 @@ public class BallCreator : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
-                StartCoroutine(SendBallsTouch(touch));
+                StartCoroutine(SendBallsTouch());
             }
 
             Vector3 screenPoint = touch.position;
@@ -50,7 +52,7 @@ public class BallCreator : MonoBehaviour
 
             dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
 
-            dummyPos.y = 16f;
+            dummyPos.y = DataScript.screenTopCenter.y;
             dummyPos.z = 0.5f;
 
             ballShooter.transform.position = dummyPos;
@@ -65,7 +67,7 @@ public class BallCreator : MonoBehaviour
 
             dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
 
-            dummyPos.y = 16f;
+            dummyPos.y = DataScript.screenTopCenter.y;
             dummyPos.z = 0.5f;
 
             ballShooter.transform.position = dummyPos;
@@ -85,28 +87,36 @@ public class BallCreator : MonoBehaviour
         
     }
 
-    public IEnumerator SendBallsTouch(Touch touch)
+    public IEnumerator SendBallsTouch()
     {
         while(Input.touchCount > 0 && DataScript.ballCount > 0)
         {
+            Touch touch = Input.GetTouch(0);
             selectedBall = objectPooler.GetPooledObject(ballsList);
             if (selectedBall != null)
             {
 
-                DataScript.ballCount -= 1;
-                counterScript.SetInGameBallCounter();
-
+               
                 Vector3 screenPoint = touch.position;
                 screenPoint.z = Camera.main.transform.position.z - 0.5f;
 
                 dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
 
-                dummyPos.y = 13f;
-                dummyPos.z = 0.5f;
+                if(dummyPos.y < 12f)
+                {
+                    dummyPos.y = DataScript.screenTopCenter.y - 3f;
+                    dummyPos.z = 0.5f;
 
-                ballShooter.transform.position = dummyPos;
-                selectedBall.transform.position = dummyPos;
-                selectedBall.SetActive(true);
+                    DataScript.ballCount -= 1;
+                    counterScript.SetInGameBallCounter();
+
+
+                    selectedBall.transform.position = dummyPos;
+                    selectedBall.SetActive(true);
+                    selectedBall.GetComponent<Rigidbody>().velocity = new Vector3(0f, -12f, 0f);
+                }
+
+                
             }
             yield return new WaitForSecondsRealtime(0.15f);
         }
@@ -122,19 +132,27 @@ public class BallCreator : MonoBehaviour
             if (selectedBall != null)
             {
 
-                DataScript.ballCount -= 1;
-                counterScript.SetInGameBallCounter();
-
+                
                 Vector3 screenPoint = Input.mousePosition;
                 screenPoint.z = Camera.main.transform.position.z - 0.5f;
 
                 dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
 
-                dummyPos.y = 13f;
-                dummyPos.z = 0.5f;
+                if(dummyPos.y < 12f)
+                {
+                    dummyPos.y = DataScript.screenTopCenter.y - 3f;
+                    dummyPos.z = 0.5f;
+
+
+                    DataScript.ballCount -= 1;
+                    counterScript.SetInGameBallCounter();
+
+
+                    selectedBall.transform.position = dummyPos;
+                    selectedBall.SetActive(true);
+                    selectedBall.GetComponent<Rigidbody>().velocity = new Vector3(0f, -12f, 0f);
+                }
                 
-                selectedBall.transform.position = dummyPos;
-                selectedBall.SetActive(true);
             }
             yield return new WaitForSecondsRealtime(0.15f);
         }

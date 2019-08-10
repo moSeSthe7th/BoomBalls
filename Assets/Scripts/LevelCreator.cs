@@ -12,16 +12,24 @@ public class LevelCreator : MonoBehaviour
     private LevelData levelData;
     private ColorScript colorScript;
     private InGameBallCounterScript counterScript;
+    private CameraScaler cameraScaler;
 
     public List<LevelData.Box> boxes;
     public List<LevelData.RotatingObject> rotatingObjects;
     private List<Vector3> obstaclePositions;
+    private float cameraScale;
+    
+
+    private Quaternion reversedCameraQuaternion;
 
     void Start()
     {
         levelData = FindObjectOfType(typeof(LevelData)) as LevelData;
         colorScript = FindObjectOfType(typeof(ColorScript)) as ColorScript;
         counterScript = FindObjectOfType(typeof(InGameBallCounterScript)) as InGameBallCounterScript;
+        cameraScaler = FindObjectOfType(typeof(CameraScaler)) as CameraScaler;
+
+        reversedCameraQuaternion = new Quaternion(180f, 0, 0,0);
 
         CreateLevel();
     }
@@ -38,6 +46,15 @@ public class LevelCreator : MonoBehaviour
         obstaclePositions = levelData.obstaclePositions;
         DataScript.ballCount = levelData.ballCount;
         counterScript.SetInGameBallCounter();
+        
+        cameraScale = levelData.cameraScale;
+        cameraScaler.SetCameraScale(cameraScale);
+        DataScript.screenTopCenter = FindTopOfTheScreen();
+
+        if (levelData.isLevelReversed)
+        {
+            Camera.main.transform.rotation = reversedCameraQuaternion;
+        }
 
         for (int i = 0; i< boxes.Count; i++)
         {
@@ -63,5 +80,15 @@ public class LevelCreator : MonoBehaviour
         {
             Instantiate(obstacle, obstaclePositions[i],Quaternion.identity);
         }
+    }
+
+    private Vector3 FindTopOfTheScreen()
+    {
+        Vector3 screenPoint = Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight, Camera.main.transform.position.z - 0.5f));
+        Debug.Log("Screen Point: " + screenPoint);
+        screenPoint.x = 0;
+        screenPoint.z = 0.5f;
+
+        return screenPoint;
     }
 }

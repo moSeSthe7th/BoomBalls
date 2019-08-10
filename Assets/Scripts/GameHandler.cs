@@ -9,13 +9,16 @@ public class GameHandler : MonoBehaviour
     {
         DataScript.finishedBoxCount = 0;
         DataScript.boxCountInLevel = 0;
-        DataScript.totalLevelCount = 6;
+        DataScript.totalLevelCount = 16;
         DataScript.currentLevel = PlayerPrefs.GetInt("Current Level", 1);
         DataScript.maxReachedLevel = PlayerPrefs.GetInt("Max Reached Level", 1);
         DataScript.isGamePaused = false;
         DataScript.gameOverLock = true;
+        
         Time.timeScale = 2.5f;
         
     }
+
+   
 
 }

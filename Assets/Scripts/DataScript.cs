@@ -21,4 +21,6 @@ public static class DataScript
     public static Color textColor;
 
     public static bool gameOverLock;
+
+    public static Vector3 screenTopCenter;
 }
