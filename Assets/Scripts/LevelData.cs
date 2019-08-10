@@ -6,6 +6,8 @@ public class LevelData : MonoBehaviour
 {
     public List<Box> boxes;
     public List<RotatingObject> rotatingObjects;
+    public List<Whirlwind> whirlwinds;
+
     public string levelStyle;
     public int ballCount;
 
@@ -35,11 +37,27 @@ public class LevelData : MonoBehaviour
     {
         public Vector3 position;
         public int count;
+        public bool isMovingVertical;
+        public bool isMovingHorizontal;
 
-        public Box(Vector3 pos, int cnt)
+        public Box(Vector3 pos, int cnt, bool ismovingvertical, bool ismovinghorizontal)
         {
             this.position = pos;
             this.count = cnt;
+            this.isMovingHorizontal = ismovinghorizontal;
+            this.isMovingVertical = ismovingvertical;
+        }
+    }
+
+    public struct Whirlwind
+    {
+        public Vector3 position;
+        public bool isRotatingClockwise;
+
+        public Whirlwind(Vector3 pos, bool isClockwise)
+        {
+            this.isRotatingClockwise = isClockwise;
+            this.position = pos;
         }
     }
 
@@ -47,14 +65,15 @@ public class LevelData : MonoBehaviour
     {
         List<Box> boxesInner = new List<Box>();
         List<RotatingObject> rotatingObjectsInner = new List<RotatingObject>();
+        List<Whirlwind> whirlwindsInner = new List<Whirlwind>();
 
         switch (levelNumber)
         {
             case 1:
-                boxesInner.Add(new Box(new Vector3(-6f, -10f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-8f, 4f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(6f, -10f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(8f, 4f, 0.5f), 20));
+                boxesInner.Add(new Box(new Vector3(-6f, -10f, 0.5f), 20,false,false));
+                boxesInner.Add(new Box(new Vector3(-8f, 4f, 0.5f), 20,false,false));
+                boxesInner.Add(new Box(new Vector3(6f, -10f, 0.5f), 20,false,false));
+                boxesInner.Add(new Box(new Vector3(8f, 4f, 0.5f), 20, false, false));
 
                 obstaclePositions.Add(new Vector3(-6f, 8f, 0.5f));
                 obstaclePositions.Add(new Vector3(-8f, 8f, 0.5f));
@@ -74,9 +93,9 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 2:
-                boxesInner.Add(new Box(new Vector3(8f, 0, 0.5f), 30));
-                boxesInner.Add(new Box(new Vector3(-8f, 0, 0.5f), 30));
-                boxesInner.Add(new Box(new Vector3(8f, -9f, 0.5f), 30));
+                boxesInner.Add(new Box(new Vector3(8f, 0, 0.5f), 30, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 0, 0.5f), 30, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, -9f, 0.5f), 30, false, false));
 
                 obstaclePositions.Add(new Vector3(8f, 8f, 0.5f));
                 obstaclePositions.Add(new Vector3(-8f, 8f, 0.5f));
@@ -95,11 +114,11 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 3:
-                boxesInner.Add(new Box(new Vector3(-6f, -10f, 0.5f), 40));
-                boxesInner.Add(new Box(new Vector3(-8f, 4f, 0.5f), 40));
-                boxesInner.Add(new Box(new Vector3(-3f, -10f, 0.5f), 40));
-                boxesInner.Add(new Box(new Vector3(8f, -10f, 0.5f), 40));
-                boxesInner.Add(new Box(new Vector3(8f, -2f, 0.5f), 40));
+                boxesInner.Add(new Box(new Vector3(-6f, -10f, 0.5f), 40, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 4f, 0.5f), 40, false, false));
+                boxesInner.Add(new Box(new Vector3(-3f, -10f, 0.5f), 40, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, -10f, 0.5f), 40, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, -2f, 0.5f), 40, false, false));
 
                 obstaclePositions.Add(new Vector3(8f, 8f, 0.5f));
                 obstaclePositions.Add(new Vector3(-8f, 8f, 0.5f));
@@ -119,13 +138,13 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 4:
-                boxesInner.Add(new Box(new Vector3(-5f, -13f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(-8f, 12f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(8f, 7f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(-8f, 12f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(7f, -14f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(8f, 0f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(-8f, 3f, 0.5f), 50));
+                boxesInner.Add(new Box(new Vector3(-5f, -13f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 12f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, 7f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 12f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(7f, -14f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, 0f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 3f, 0.5f), 50, false, false));
 
                 obstaclePositions.Add(new Vector3(-5f, -5f, 0.5f));
 
@@ -146,9 +165,9 @@ public class LevelData : MonoBehaviour
 
             case 5:
                
-                boxesInner.Add(new Box(new Vector3(3f, 3f, 0.5f), 6));
-                boxesInner.Add(new Box(new Vector3(5f, -14f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(0, -12f, 0.5f), 20));
+                boxesInner.Add(new Box(new Vector3(3f, 3f, 0.5f), 6, false, false));
+                boxesInner.Add(new Box(new Vector3(5f, -14f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(0, -12f, 0.5f), 20, false, false));
 
                 rotatingObjectsInner.Add(new RotatingObject(new Vector3(8f, -8f, 0.5f), true, new Vector3(4f, 1f, 1f), true));
                 rotatingObjectsInner.Add(new RotatingObject(new Vector3(-4f, -5f, 0.5f), true, new Vector3(4f, 1f, 1f), true));
@@ -169,10 +188,10 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 6:
-                boxesInner.Add(new Box(new Vector3(2f, -14f, 0.5f), 1));
-                boxesInner.Add(new Box(new Vector3(8f, 6f, 0.5f), 1));
-                boxesInner.Add(new Box(new Vector3(2f, -14f, 0.5f), 1));
-                boxesInner.Add(new Box(new Vector3(-8f, 10f, 0.5f), 1));
+                boxesInner.Add(new Box(new Vector3(2f, -14f, 0.5f), 1, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, 6f, 0.5f), 1, false, false));
+                boxesInner.Add(new Box(new Vector3(2f, -14f, 0.5f), 1, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 10f, 0.5f), 1, false, false));
 
 
 
@@ -191,10 +210,10 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 7:
-                boxesInner.Add(new Box(new Vector3(-8f, 9f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-8f, 3f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-10f, -14f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-8f, -1f, 0.5f), 20));
+                boxesInner.Add(new Box(new Vector3(-8f, 9f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 3f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(-10f, -14f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, -1f, 0.5f), 20, false, false));
 
 
                 rotatingObjectsInner.Add(new RotatingObject(new Vector3(2f, 2f, 0.5f), false, new Vector3(6f, 1f, 1f), false));
@@ -212,9 +231,9 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 8:
-                boxesInner.Add(new Box(new Vector3(0f, -10f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(6.5f, 8f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-5.5f, 8f, 0.5f), 20));
+                boxesInner.Add(new Box(new Vector3(0f, -10f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(6.5f, 8f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(-5.5f, 8f, 0.5f), 20, false, false));
 
                 obstaclePositions.Add(new Vector3(6.5f, 11f, 0.5f));
                 obstaclePositions.Add(new Vector3(-5.5f, 11f, 0.5f));
@@ -234,10 +253,10 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 9:
-                boxesInner.Add(new Box(new Vector3(-6f, -10f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-8f, 4f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(6f, -10f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(8f, 4f, 0.5f), 20));
+                boxesInner.Add(new Box(new Vector3(-6f, -10f, 0.5f), 20, true, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 4f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(6f, -10f, 0.5f), 20, true, true));
+                boxesInner.Add(new Box(new Vector3(8f, 4f, 0.5f), 20, false, true));
 
                 obstaclePositions.Add(new Vector3(-6f, 8f, 0.5f));
                 obstaclePositions.Add(new Vector3(-8f, 8f, 0.5f));
@@ -245,6 +264,8 @@ public class LevelData : MonoBehaviour
                 obstaclePositions.Add(new Vector3(8f, 8f, 0.5f));
 
                 rotatingObjectsInner.Add(new RotatingObject(new Vector3(0f, 0f, 0.5f), false, new Vector3(6f, 1f, 1f), false));
+
+                whirlwindsInner.Add(new Whirlwind(new Vector3(0, 8f, 0.5f),false));
 
                 ballCount = 500;
 
@@ -257,9 +278,9 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 10:
-                boxesInner.Add(new Box(new Vector3(8f, 0, 0.5f), 30));
-                boxesInner.Add(new Box(new Vector3(-8f, 0, 0.5f), 30));
-                boxesInner.Add(new Box(new Vector3(8f, -9f, 0.5f), 30));
+                boxesInner.Add(new Box(new Vector3(8f, 0, 0.5f), 30, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 0, 0.5f), 30, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, -9f, 0.5f), 30, false, false));
 
                 obstaclePositions.Add(new Vector3(8f, 8f, 0.5f));
                 obstaclePositions.Add(new Vector3(-8f, 8f, 0.5f));
@@ -278,11 +299,11 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 11:
-                boxesInner.Add(new Box(new Vector3(-6f, -10f, 0.5f), 40));
-                boxesInner.Add(new Box(new Vector3(-8f, 4f, 0.5f), 40));
-                boxesInner.Add(new Box(new Vector3(-3f, -10f, 0.5f), 40));
-                boxesInner.Add(new Box(new Vector3(8f, -10f, 0.5f), 40));
-                boxesInner.Add(new Box(new Vector3(8f, -2f, 0.5f), 40));
+                boxesInner.Add(new Box(new Vector3(-6f, -10f, 0.5f), 40, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 4f, 0.5f), 40, false, false));
+                boxesInner.Add(new Box(new Vector3(-3f, -10f, 0.5f), 40, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, -10f, 0.5f), 40, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, -2f, 0.5f), 40, false, false));
 
                 obstaclePositions.Add(new Vector3(8f, 8f, 0.5f));
                 obstaclePositions.Add(new Vector3(-8f, 8f, 0.5f));
@@ -302,13 +323,13 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 12:
-                boxesInner.Add(new Box(new Vector3(-5f, -13f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(-8f, 12f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(8f, 7f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(-8f, 12f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(7f, -14f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(8f, 0f, 0.5f), 50));
-                boxesInner.Add(new Box(new Vector3(-8f, 3f, 0.5f), 50));
+                boxesInner.Add(new Box(new Vector3(-5f, -13f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 12f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, 7f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 12f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(7f, -14f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, 0f, 0.5f), 50, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 3f, 0.5f), 50, false, false));
 
                 obstaclePositions.Add(new Vector3(-5f, -5f, 0.5f));
 
@@ -329,9 +350,9 @@ public class LevelData : MonoBehaviour
 
             case 13:
 
-                boxesInner.Add(new Box(new Vector3(3f, 3f, 0.5f), 6));
-                boxesInner.Add(new Box(new Vector3(5f, -14f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(0, -12f, 0.5f), 20));
+                boxesInner.Add(new Box(new Vector3(3f, 3f, 0.5f), 6, false, false));
+                boxesInner.Add(new Box(new Vector3(5f, -14f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(0, -12f, 0.5f), 20, false, false));
 
                 rotatingObjectsInner.Add(new RotatingObject(new Vector3(8f, -8f, 0.5f), true, new Vector3(4f, 1f, 1f), true));
                 rotatingObjectsInner.Add(new RotatingObject(new Vector3(-4f, -5f, 0.5f), true, new Vector3(4f, 1f, 1f), true));
@@ -352,10 +373,10 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 14:
-                boxesInner.Add(new Box(new Vector3(2f, -14f, 0.5f), 1));
-                boxesInner.Add(new Box(new Vector3(8f, 6f, 0.5f), 1));
-                boxesInner.Add(new Box(new Vector3(2f, -14f, 0.5f), 1));
-                boxesInner.Add(new Box(new Vector3(-8f, 10f, 0.5f), 1));
+                boxesInner.Add(new Box(new Vector3(2f, -14f, 0.5f), 1, false, false));
+                boxesInner.Add(new Box(new Vector3(8f, 6f, 0.5f), 1, false, false));
+                boxesInner.Add(new Box(new Vector3(2f, -14f, 0.5f), 1, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 10f, 0.5f), 1, false, false));
 
 
 
@@ -374,10 +395,10 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 15:
-                boxesInner.Add(new Box(new Vector3(-8f, 9f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-8f, 3f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-10f, -14f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-8f, -1f, 0.5f), 20));
+                boxesInner.Add(new Box(new Vector3(-8f, 9f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, 3f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(-10f, -14f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(-8f, -1f, 0.5f), 20, false, false));
 
 
                 rotatingObjectsInner.Add(new RotatingObject(new Vector3(2f, 2f, 0.5f), false, new Vector3(6f, 1f, 1f), false));
@@ -395,9 +416,9 @@ public class LevelData : MonoBehaviour
                 break;
 
             case 16:
-                boxesInner.Add(new Box(new Vector3(0f, -10f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(6.5f, 8f, 0.5f), 20));
-                boxesInner.Add(new Box(new Vector3(-5.5f, 8f, 0.5f), 20));
+                boxesInner.Add(new Box(new Vector3(0f, -10f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(6.5f, 8f, 0.5f), 20, false, false));
+                boxesInner.Add(new Box(new Vector3(-5.5f, 8f, 0.5f), 20, false, false));
 
                 obstaclePositions.Add(new Vector3(6.5f, 11f, 0.5f));
                 obstaclePositions.Add(new Vector3(-5.5f, 11f, 0.5f));
@@ -421,5 +442,6 @@ public class LevelData : MonoBehaviour
 
         boxes = boxesInner;
         rotatingObjects = rotatingObjectsInner;
+        whirlwinds = whirlwindsInner;
     }
 }

@@ -8,14 +8,18 @@ public class LevelCreator : MonoBehaviour
     public GameObject rotatingObject;
     public GameObject box;
     public GameObject obstacle;
+    public GameObject whirlwind;
 
     private LevelData levelData;
     private ColorScript colorScript;
     private InGameBallCounterScript counterScript;
     private CameraScaler cameraScaler;
+   
 
     public List<LevelData.Box> boxes;
     public List<LevelData.RotatingObject> rotatingObjects;
+    public List<LevelData.Whirlwind> whirlwinds;
+
     private List<Vector3> obstaclePositions;
     private float cameraScale;
     
@@ -28,6 +32,7 @@ public class LevelCreator : MonoBehaviour
         colorScript = FindObjectOfType(typeof(ColorScript)) as ColorScript;
         counterScript = FindObjectOfType(typeof(InGameBallCounterScript)) as InGameBallCounterScript;
         cameraScaler = FindObjectOfType(typeof(CameraScaler)) as CameraScaler;
+        
 
         reversedCameraQuaternion = new Quaternion(180f, 0, 0,0);
 
@@ -41,9 +46,12 @@ public class LevelCreator : MonoBehaviour
         levelData.LoadLevelData(DataScript.currentLevel);
 
         colorScript.ColorizeTheLevel(levelData.levelStyle);
+
         rotatingObjects = levelData.rotatingObjects;
         boxes = levelData.boxes;
+        whirlwinds = levelData.whirlwinds;
         obstaclePositions = levelData.obstaclePositions;
+
         DataScript.ballCount = levelData.ballCount;
         counterScript.SetInGameBallCounter();
         
@@ -56,15 +64,34 @@ public class LevelCreator : MonoBehaviour
             Camera.main.transform.rotation = reversedCameraQuaternion;
         }
 
+        for(int i = 0; i < whirlwinds.Count; i++)
+        {
+            GameObject currentWhirlwind = Instantiate(whirlwind, whirlwinds[i].position, Quaternion.identity);
+            WhirlwindScript whirlwindScript = currentWhirlwind.GetComponent<WhirlwindScript>();
+            StartCoroutine(whirlwindScript.InitializeWhirlWind(whirlwinds[i].isRotatingClockwise));
+        }
+
         for (int i = 0; i< boxes.Count; i++)
         {
             DataScript.boxCountInLevel += 1;
 
             GameObject currentBox = Instantiate(box, boxes[i].position, box.transform.rotation);
             HitBoxScript hitBoxScript = currentBox.GetComponent<HitBoxScript>();
+            HitBoxMoverScript hitBoxMoverScript = currentBox.GetComponent<HitBoxMoverScript>();
+
             hitBoxScript.count = boxes[i].count;
             Text text = currentBox.GetComponentInChildren<Text>();
             text.text = boxes[i].count.ToString();
+
+            if (boxes[i].isMovingHorizontal)
+            {
+                StartCoroutine(hitBoxMoverScript.HitBoxOscillator(true));
+            }
+            else if (boxes[i].isMovingVertical)
+            {
+                StartCoroutine(hitBoxMoverScript.HitBoxOscillator(false));
+            }
+
             //currentBox.transform.rotation = new Quaternion(0f, 180f, 0f,0f);
         }
 
@@ -85,7 +112,7 @@ public class LevelCreator : MonoBehaviour
     private Vector3 FindTopOfTheScreen()
     {
         Vector3 screenPoint = Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight, Camera.main.transform.position.z - 0.5f));
-        Debug.Log("Screen Point: " + screenPoint);
+        
         screenPoint.x = 0;
         screenPoint.z = 0.5f;
 

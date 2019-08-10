@@ -2624,6 +2624,8 @@ MonoBehaviour:
   box: {fileID: 3681092596315411603, guid: 03c8132be3a812d47ae4f511f23961ea, type: 3}
   obstacle: {fileID: 1930791946808108302, guid: e8061421887db7748a001fbcc71d3eba,
     type: 3}
+  whirlwind: {fileID: 411128481061769528, guid: 5beec8bba2aaab542b422e008ae1f18a,
+    type: 3}
 --- !u!114 &1473938838
 MonoBehaviour:
   m_ObjectHideFlags: 0
