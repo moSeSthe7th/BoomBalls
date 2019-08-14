@@ -13,13 +13,7 @@ public class TextFader : MonoBehaviour
         text = GetComponent<Text>();
         StartCoroutine(Fader());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     IEnumerator Fader()
     {
         dummyColor = text.color;

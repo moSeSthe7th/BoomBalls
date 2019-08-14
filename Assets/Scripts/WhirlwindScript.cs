@@ -6,13 +6,15 @@ public class WhirlwindScript : MonoBehaviour
 {
    
 
-    public IEnumerator InitializeWhirlWind(bool isRotatingClockwise)
+    public IEnumerator InitializeWhirlWind(bool isRotatingClockwise,float rotatingSpeed,float delay)
     {
+        yield return new WaitForSecondsRealtime(delay);
+
         if (isRotatingClockwise)
         {
             while (true)
             {
-                gameObject.transform.Rotate(0, 0, 10f);
+                gameObject.transform.Rotate(0, 0, rotatingSpeed);
                 yield return new WaitForSecondsRealtime(0.01f);
             }
         }
@@ -20,7 +22,7 @@ public class WhirlwindScript : MonoBehaviour
         {
             while (true)
             {
-                gameObject.transform.Rotate(0, 0, -10f);
+                gameObject.transform.Rotate(0, 0, -1*rotatingSpeed);
                 yield return new WaitForSecondsRealtime(0.01f);
             }
             

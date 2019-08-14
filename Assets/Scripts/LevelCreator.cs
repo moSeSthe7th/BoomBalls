@@ -68,7 +68,7 @@ public class LevelCreator : MonoBehaviour
         {
             GameObject currentWhirlwind = Instantiate(whirlwind, whirlwinds[i].position, Quaternion.identity);
             WhirlwindScript whirlwindScript = currentWhirlwind.GetComponent<WhirlwindScript>();
-            StartCoroutine(whirlwindScript.InitializeWhirlWind(whirlwinds[i].isRotatingClockwise));
+            StartCoroutine(whirlwindScript.InitializeWhirlWind(whirlwinds[i].isRotatingClockwise,whirlwinds[i].rotatingSpeed,whirlwinds[i].delay));
         }
 
         for (int i = 0; i< boxes.Count; i++)

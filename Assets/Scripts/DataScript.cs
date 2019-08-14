@@ -23,4 +23,6 @@ public static class DataScript
     public static bool gameOverLock;
 
     public static Vector3 screenTopCenter;
+
+    public static bool isBonusLevel;
 }

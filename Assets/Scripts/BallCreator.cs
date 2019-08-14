@@ -102,7 +102,7 @@ public class BallCreator : MonoBehaviour
 
                 dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
 
-                if(dummyPos.y < 12f)
+                if(dummyPos.y < DataScript.screenTopCenter.y - 5f)
                 {
                     dummyPos.y = DataScript.screenTopCenter.y - 3f;
                     dummyPos.z = 0.5f;
@@ -138,7 +138,7 @@ public class BallCreator : MonoBehaviour
 
                 dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
 
-                if(dummyPos.y < 12f)
+                if(dummyPos.y <= DataScript.screenTopCenter.y-5f)
                 {
                     dummyPos.y = DataScript.screenTopCenter.y - 3f;
                     dummyPos.z = 0.5f;

@@ -32,6 +32,7 @@ public class ColorScript : MonoBehaviour
                 ballMat.SetColor("_EmissionColor", new Color(2f, 0, 0));
                 basketMat.SetColor("_EmissionColor", new Color(2f, 0, 0));
                 rotatingObjectMat.SetColor("_EmissionColor", new Color(1f, 0, 0));
+                backgroundPlaneMat.SetColor("_EmissionColor", Color.white);
 
                 DataScript.textColor = new Color(1f, 0.3254717f, 0.3254717f);
 
@@ -52,6 +53,7 @@ public class ColorScript : MonoBehaviour
                 basketMat.SetColor("_EmissionColor", new Color(2f, 0, 0));
                 //alternate basketMat.SetColor("_EmissionColor", new Color(0.7604733f, 0.2221288f, 0));
                 rotatingObjectMat.SetColor("_EmissionColor", new Color(2f, 0, 0));
+                backgroundPlaneMat.SetColor("_EmissionColor", Color.white);
 
                 DataScript.textColor = new Color(1f, 0.6369535f, 0.3254902f);
 
@@ -63,13 +65,14 @@ public class ColorScript : MonoBehaviour
 
                 ballMat.color = new Color(1f, 0.9522471f, 0f);
                 basketMat.color = new Color(1f, 0.95381f, 0);
-                backgroundPlaneMat.color = Color.white;
+                backgroundPlaneMat.color = new Color(0.8726415f, 0.9367208f, 1f);
                 rotatingObjectMat.color = new Color(1f, 0.95381f, 0);
                 ballShooterMat.color = new Color(1f, 0.95381f, 0);
 
                 ballMat.SetColor("_EmissionColor", new Color(0.5f, 0.01372549f, 0.01372549f));
                 basketMat.SetColor("_EmissionColor", new Color(1.148698f, 0.2702682f, 0));
                 rotatingObjectMat.SetColor("_EmissionColor", new Color(1.148698f, 0.2702682f, 0));
+                backgroundPlaneMat.SetColor("_EmissionColor", Color.black);
 
                 DataScript.textColor = new Color(1f, 0.9305689f, 0.3254902f);
 
@@ -88,6 +91,7 @@ public class ColorScript : MonoBehaviour
                 ballMat.SetColor("_EmissionColor", new Color(0, 0, 0));
                 basketMat.SetColor("_EmissionColor", new Color(0, 0, 0));
                 rotatingObjectMat.SetColor("_EmissionColor", new Color(0, 0, 0));
+                backgroundPlaneMat.SetColor("_EmissionColor", Color.white);
 
                 DataScript.textColor = new Color(0.3254902f, 1f, 0.4435614f);
 
@@ -106,6 +110,7 @@ public class ColorScript : MonoBehaviour
                 ballMat.SetColor("_EmissionColor", new Color(0, 0, 0));
                 basketMat.SetColor("_EmissionColor", new Color(0, 0, 0));
                 rotatingObjectMat.SetColor("_EmissionColor", new Color(0, 0, 0));
+                backgroundPlaneMat.SetColor("_EmissionColor", Color.white);
 
                 DataScript.textColor = new Color(0.3254902f, 0.8207444f, 1f);
 
@@ -124,6 +129,7 @@ public class ColorScript : MonoBehaviour
                 ballMat.SetColor("_EmissionColor", new Color(0, 0, 0));
                 basketMat.SetColor("_EmissionColor", new Color(0, 0, 0));
                 rotatingObjectMat.SetColor("_EmissionColor", new Color(0, 0, 0));
+                backgroundPlaneMat.SetColor("_EmissionColor", Color.white);
 
                 DataScript.textColor = new Color(0.9824958f, 0.3254902f, 1f);
 
@@ -142,6 +148,7 @@ public class ColorScript : MonoBehaviour
                 ballMat.SetColor("_EmissionColor", new Color(0, 0, 0));
                 basketMat.SetColor("_EmissionColor", new Color(0, 0, 0));
                 rotatingObjectMat.SetColor("_EmissionColor", new Color(0, 0, 0));
+                backgroundPlaneMat.SetColor("_EmissionColor", Color.white);
 
                 DataScript.textColor = new Color(1f, 0.4009434f, 0.8860744f);
 

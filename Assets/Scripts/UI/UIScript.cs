@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Facebook.Unity;
 
 public class UIScript : MonoBehaviour
 {
@@ -32,8 +33,10 @@ public class UIScript : MonoBehaviour
     public Button exitButton;
     public Button nextLevelButton;
     public Button restartButton;
+    public Button restartButtonInSettings;
 
     public Text startingText;
+    public Text bonusLevelText;
 
     public Image ballCounterImage;
     
@@ -91,6 +94,7 @@ public class UIScript : MonoBehaviour
         exitButton.GetComponent<Image>().sprite = usedColors[4];
         nextLevelButton.GetComponent<Image>().sprite = usedColors[6];
         restartButton.GetComponent<Image>().sprite = usedColors[7];
+        restartButtonInSettings.GetComponent<Image>().sprite = usedColors[7];
         ballCounterImage.sprite = usedColors[5];
         levelsPanel.GetComponent<Image>().sprite = usedColors[8];
 
@@ -100,6 +104,11 @@ public class UIScript : MonoBehaviour
         levelsPanel.SetActive(false);
         levelAccomplishedPanel.SetActive(false);
         gameOverPanel.SetActive(false);
+
+        if (!DataScript.isBonusLevel)
+        {
+            bonusLevelText.gameObject.SetActive(false);
+        }
 
         levelsPanelScript.CreateLevelsPanelWithColor(usedColors[5]);
     }
@@ -140,6 +149,7 @@ public class UIScript : MonoBehaviour
     public void LevelAccomplished()
     {
         DataScript.gameOverLock = false;
+        FB.LogAppEvent(AppEventName.AchievedLevel, (float)DataScript.currentLevel);
         levelAccomplishedPanel.SetActive(true);
     }
 
