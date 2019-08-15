@@ -151,6 +151,13 @@ public class UIScript : MonoBehaviour
         DataScript.gameOverLock = false;
         FB.LogAppEvent(AppEventName.AchievedLevel, (float)DataScript.currentLevel);
         levelAccomplishedPanel.SetActive(true);
+
+
+
+        Dictionary<string, string> levelAchieved = new Dictionary<string, string>();
+        levelAchieved.Add("af_AchievedLevel", DataScript.currentLevel.ToString());
+        AppsFlyer.trackRichEvent("af_levelAchieved", levelAchieved);
+
     }
 
     public void GameOver()
