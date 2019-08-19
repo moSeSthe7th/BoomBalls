@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class HitBoxMoverScript : MonoBehaviour
 {
-
-    private Vector3 dummyPosVec;
+   
+    
     private Vector3 startingPosHolder;
    
 
 
-    public IEnumerator HitBoxOscillator(bool isMovingHorizontal)
+    public IEnumerator HitBoxOscillator(bool isMovingHorizontal, float speed, float waitingTime)
     {
-        dummyPosVec = transform.position;
+        
         startingPosHolder = transform.position;
 
         if (isMovingHorizontal)
         {
             bool isMovingRight = true;
-            float i = startingPosHolder.x;
+            
 
             while (true)
             {
@@ -28,19 +28,17 @@ public class HitBoxMoverScript : MonoBehaviour
                 {
                     if (isMovingRight)
                     {
-                        i -= 0.3f;
-                        dummyPosVec.x = i;
-                        transform.position = dummyPosVec;
+                        
+                        transform.Translate(Vector3.right * speed, Space.Self);
                     }
                     else
                     {
-                        i += 0.3f;
-                        dummyPosVec.x = i;
-                        transform.position = dummyPosVec;
+                       
+                        transform.Translate(Vector3.left * speed, Space.Self);
                     }
 
-                    yield return new WaitForSecondsRealtime(0.1f);
-                } while (startingPosHolder.x - 1.5f < i && i < startingPosHolder.x + 1.5f);
+                    yield return new WaitForSecondsRealtime(waitingTime);
+                } while (startingPosHolder.x - 1.5f < transform.position.x && transform.position.x < startingPosHolder.x + 1.5f);
                 
                 isMovingRight = !isMovingRight;
             }
@@ -48,27 +46,22 @@ public class HitBoxMoverScript : MonoBehaviour
         else
         {
             bool isMovingUp = true;
-            float i = startingPosHolder.y;
-
+            
             while (true)
             {
                 do
                 {
                     if (isMovingUp)
                     {
-                        i += 0.3f;
-                        dummyPosVec.y = i;
-                        transform.position = dummyPosVec;
+                        transform.Translate(Vector3.up * speed, Space.Self);
                     }
                     else
                     {
-                        i -= 0.3f;
-                        dummyPosVec.y = i;
-                        transform.position = dummyPosVec;
+                        transform.Translate(Vector3.down * speed, Space.Self);
                     }
 
-                    yield return new WaitForSecondsRealtime(0.1f);
-                } while (startingPosHolder.y - 1.5f < i && i < startingPosHolder.y + 1.5f);
+                    yield return new WaitForSecondsRealtime(waitingTime);
+                } while (startingPosHolder.y - 1.5f < transform.position.y && transform.position.y < startingPosHolder.y + 1.5f);
 
                 isMovingUp = !isMovingUp;
             }

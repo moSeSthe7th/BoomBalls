@@ -21,6 +21,7 @@ public class BallCreator : MonoBehaviour
     //private Vector3 selectedBallPos;
 
     private Vector3 dummyPos;
+    private Vector3 ballShooterPos;
 
     void Start()
     {
@@ -28,8 +29,10 @@ public class BallCreator : MonoBehaviour
         ballsList = objectPooler.PooltheObjects(ball, 20);
         counterScript = FindObjectOfType(typeof(InGameBallCounterScript)) as InGameBallCounterScript;
         uIScript = FindObjectOfType(typeof(UIScript)) as UIScript;
+        ballShooterPos = DataScript.screenTopCenter;
+        ballShooterPos.y -= 2f;
 
-        ballShooter.transform.position = DataScript.screenTopCenter;
+        ballShooter.transform.position = ballShooterPos;
 
         isCoroutineStarted = false;
     }
@@ -52,10 +55,14 @@ public class BallCreator : MonoBehaviour
 
             dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
 
-            dummyPos.y = DataScript.screenTopCenter.y;
+            dummyPos.y = ballShooterPos.y;
             dummyPos.z = 0.5f;
 
-            ballShooter.transform.position = dummyPos;
+
+            ballShooter.transform.position = Vector3.MoveTowards(ballShooter.transform.position, dummyPos, 15 * Time.deltaTime * Mathf.Abs(ballShooter.transform.position.x - dummyPos.x));
+
+
+
         }
 #endregion
 
@@ -67,10 +74,10 @@ public class BallCreator : MonoBehaviour
 
             dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
 
-            dummyPos.y = DataScript.screenTopCenter.y;
+            dummyPos.y = ballShooterPos.y;
             dummyPos.z = 0.5f;
 
-            ballShooter.transform.position = dummyPos;
+            ballShooter.transform.position = Vector3.MoveTowards(ballShooter.transform.position, dummyPos, 15 * Time.deltaTime * Mathf.Abs(ballShooter.transform.position.x - dummyPos.x));
 
             uIScript.GameStarted();
             if (!isCoroutineStarted)
@@ -80,9 +87,32 @@ public class BallCreator : MonoBehaviour
             
         }
         #endregion
-        if (DataScript.ballCount == 0 && GameObject.FindWithTag("Ball") == null && DataScript.gameOverLock)
+        if (DataScript.ballCount == 0 && DataScript.gameOverLock)
         {
-            uIScript.GameOver();
+            GameObject[] ballsInScene = GameObject.FindGameObjectsWithTag("Ball");
+            
+            if(ballsInScene == null)
+            {
+                uIScript.GameOver();
+            }
+            else
+            {
+                bool isAnyBallMoving = false;
+
+                foreach (GameObject ball in ballsInScene)
+                {
+                    if (ball.GetComponent<Rigidbody>().velocity != Vector3.zero)
+                    {
+                        isAnyBallMoving = true;
+                    }
+                }
+
+                if(isAnyBallMoving == false)
+                {
+                    uIScript.GameOver();
+                }
+            }
+
         }
         
     }
@@ -104,7 +134,7 @@ public class BallCreator : MonoBehaviour
 
                 if(dummyPos.y < DataScript.screenTopCenter.y - 5f)
                 {
-                    dummyPos.y = DataScript.screenTopCenter.y - 3f;
+                    dummyPos.y = DataScript.screenTopCenter.y - 4f;
                     dummyPos.z = 0.5f;
 
                     DataScript.ballCount -= 1;
@@ -140,7 +170,7 @@ public class BallCreator : MonoBehaviour
 
                 if(dummyPos.y <= DataScript.screenTopCenter.y-5f)
                 {
-                    dummyPos.y = DataScript.screenTopCenter.y - 3f;
+                    dummyPos.y = DataScript.screenTopCenter.y - 4f;
                     dummyPos.z = 0.5f;
 
 

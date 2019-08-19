@@ -85,11 +85,11 @@ public class LevelCreator : MonoBehaviour
 
             if (boxes[i].isMovingHorizontal)
             {
-                StartCoroutine(hitBoxMoverScript.HitBoxOscillator(true));
+                StartCoroutine(hitBoxMoverScript.HitBoxOscillator(true, 0.05f, 0.01f));
             }
             else if (boxes[i].isMovingVertical)
             {
-                StartCoroutine(hitBoxMoverScript.HitBoxOscillator(false));
+                StartCoroutine(hitBoxMoverScript.HitBoxOscillator(false, 0.05f, 0.01f));
             }
 
             //currentBox.transform.rotation = new Quaternion(0f, 180f, 0f,0f);

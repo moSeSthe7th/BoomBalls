@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class DataScript
 {
-    public static bool isGamePaused;
+    public static bool isGamePaused;        //used for cut input in game over and level passed
 
     public static int totalLevelCount;
 
@@ -25,4 +25,6 @@ public static class DataScript
     public static Vector3 screenTopCenter;
 
     public static bool isBonusLevel;
+
+    
 }

@@ -151,7 +151,7 @@ public class UIScript : MonoBehaviour
         DataScript.gameOverLock = false;
         FB.LogAppEvent(AppEventName.AchievedLevel, (float)DataScript.currentLevel);
         levelAccomplishedPanel.SetActive(true);
-
+        DataScript.isGamePaused = true;
 
 
         Dictionary<string, string> levelAchieved = new Dictionary<string, string>();
