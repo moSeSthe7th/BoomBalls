@@ -59,7 +59,7 @@ public class HitBoxScript : MonoBehaviour
             SetCountText();
 
             if(count == 0)
-                StartCoroutine(CreateCongratulationsText(true));
+                StartCoroutine(CreateCongratulationsText(false));       //bunu true yaparsan son seyde hep perfect yapar... asağıda da random secilen integer i nin range ini 0-3 e değistir
             else
                 StartCoroutine(CreateCongratulationsText(false));
 
@@ -108,7 +108,7 @@ public class HitBoxScript : MonoBehaviour
             congratulationsText.text = congratulationsStrings[3].ToString();
         else
         {
-            int i = Random.Range(0, 3);
+            int i = Random.Range(0, 4);
             congratulationsText.text = congratulationsStrings[i].ToString();
         }
         
