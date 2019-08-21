@@ -25,7 +25,7 @@ public class HitBoxScript : MonoBehaviour
 
     void Start()
     {
-        congratulationsStrings = new string[4] { "GOOD!", "NICE!", "GREAT!", "PERFECT!!!" };
+        congratulationsStrings = new string[7] { "GOOD!", "NICE!", "GREAT!", "PERFECT!!!", "WOW!!!" , "AMAZING!", "COOL!"};
         uIScript = FindObjectOfType(typeof(UIScript)) as UIScript;
         countText = GetComponentsInChildren<Text>()[0];
         congratulationsText = GetComponentsInChildren<Text>()[1];
@@ -108,7 +108,7 @@ public class HitBoxScript : MonoBehaviour
             congratulationsText.text = congratulationsStrings[3].ToString();
         else
         {
-            int i = Random.Range(0, 4);
+            int i = Random.Range(0, 7);
             congratulationsText.text = congratulationsStrings[i].ToString();
         }
         
