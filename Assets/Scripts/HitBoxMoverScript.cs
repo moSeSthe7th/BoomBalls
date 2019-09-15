@@ -22,8 +22,6 @@ public class HitBoxMoverScript : MonoBehaviour
 
             while (true)
             {
-                Debug.Log("Is moving Right " + isMovingRight);
-                
                 do
                 {
                     if (isMovingRight)

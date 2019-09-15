@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44300273, g: 0.49219579, b: 0.5719249, a: 1}
+  m_IndirectSpecularColor: {r: 0.44300252, g: 0.49219537, b: 0.5719249, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2206,6 +2206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1090855759}
+  - component: {fileID: 1090855761}
   m_Layer: 0
   m_Name: BallShooter
   m_TagString: Untagged
@@ -2230,6 +2231,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1090855761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090855758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4811e966c1cf47841af382ba4b907b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ball: {fileID: 8852267383352662228, guid: e5c0ac1a04443a24abefe99154090c7d, type: 3}
 --- !u!1 &1100108614
 GameObject:
   m_ObjectHideFlags: 0
@@ -2646,10 +2660,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1473938834}
-  - component: {fileID: 1473938833}
   - component: {fileID: 1473938835}
   - component: {fileID: 1473938837}
-  - component: {fileID: 1473938836}
   - component: {fileID: 1473938838}
   - component: {fileID: 1473938839}
   - component: {fileID: 1473938840}
@@ -2660,20 +2672,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1473938833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1473938832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4811e966c1cf47841af382ba4b907b2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ball: {fileID: 8852267383352662228, guid: e5c0ac1a04443a24abefe99154090c7d, type: 3}
-  ballShooter: {fileID: 1090855758}
 --- !u!4 &1473938834
 Transform:
   m_ObjectHideFlags: 0
@@ -2700,23 +2698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa1e4b056c61bc842b2c256949d29f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1473938836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1473938832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6db4bac5ecf8ed843a37438871dace6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelStyle: 
-  ballCount: 0
-  cameraScale: 0
-  obstaclePositions: []
-  isLevelReversed: 0
 --- !u!114 &1473938837
 MonoBehaviour:
   m_ObjectHideFlags: 0

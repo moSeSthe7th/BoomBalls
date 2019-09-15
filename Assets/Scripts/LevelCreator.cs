@@ -28,7 +28,7 @@ public class LevelCreator : MonoBehaviour
 
     void Start()
     {
-        levelData = FindObjectOfType(typeof(LevelData)) as LevelData;
+        levelData = new LevelData(); //(typeof(LevelData)) as LevelData;
         colorScript = FindObjectOfType(typeof(ColorScript)) as ColorScript;
         counterScript = FindObjectOfType(typeof(InGameBallCounterScript)) as InGameBallCounterScript;
         cameraScaler = FindObjectOfType(typeof(CameraScaler)) as CameraScaler;

@@ -10,18 +10,12 @@ public class Rotator : MonoBehaviour
         StartCoroutine(rotateLeft());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public IEnumerator rotateRight()
     {
         while (true)
         {
             gameObject.transform.Rotate(Vector3.forward, 10f);
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSecondsRealtime(Time.deltaTime);
         }
        
     }
@@ -31,7 +25,7 @@ public class Rotator : MonoBehaviour
         while (true)
         {
             gameObject.transform.Rotate(Vector3.forward, -10f);
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSecondsRealtime(Time.deltaTime);
         }
 
     }

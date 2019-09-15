@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelData : MonoBehaviour
+//Container olduğu için mb olmasına gerek yok
+public class LevelData
 {
     public List<Box> boxes;
     public List<RotatingObject> rotatingObjects;
@@ -70,6 +71,8 @@ public class LevelData : MonoBehaviour
         List<Box> boxesInner = new List<Box>();
         List<RotatingObject> rotatingObjectsInner = new List<RotatingObject>();
         List<Whirlwind> whirlwindsInner = new List<Whirlwind>();
+
+        obstaclePositions = new List<Vector3>();
 
         switch (levelNumber)
         {

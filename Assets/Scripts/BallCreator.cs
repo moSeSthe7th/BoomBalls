@@ -8,12 +8,15 @@ public class BallCreator : MonoBehaviour
     public GameObject ball;
     private List<GameObject> ballsList;
     private GameObject selectedBall;
-    public GameObject ballShooter;
+    //public GameObject ballShooter;
 
     private InGameBallCounterScript counterScript;
     private UIScript uIScript;
+    
+    ShooterObject ballShooter;
 
-    private bool isCoroutineStarted;
+    Queue<Vector3> ShootEvent;
+    Vector3 GoToPosition;
 
     //private float selectedBallx;
     //private float selectedBally;
@@ -22,6 +25,9 @@ public class BallCreator : MonoBehaviour
 
     private Vector3 dummyPos;
     private Vector3 ballShooterPos;
+
+    float timeBetweenInputs;
+    float inputTimer;
 
     void Start()
     {
@@ -32,65 +38,42 @@ public class BallCreator : MonoBehaviour
         ballShooterPos = DataScript.screenTopCenter;
         ballShooterPos.y -= 2f;
 
-        ballShooter.transform.position = ballShooterPos;
+        ballShooter = FindObjectOfType(typeof(ShooterObject)) as ShooterObject;
+        this.transform.position = ballShooterPos;
 
-        isCoroutineStarted = false;
+        ShootEvent = new Queue<Vector3>();
+
+        timeBetweenInputs = 0.5f;
     }
 
     private void Update()
     {
-        #region TouchControls
-        if (Input.touchCount > 0 && !DataScript.isGamePaused && DataScript.ballCount > 0)
+        if(ShootEvent.Count > 0)
         {
-            uIScript.GameStarted();
-            Touch touch = Input.GetTouch(0);
+            float diff = transform.position.x - GoToPosition.x;
 
-            if (touch.phase == TouchPhase.Began)
+            if (Mathf.Abs(diff) > 1f)
             {
-                StartCoroutine(SendBallsTouch());
+                transform.position = Vector3.MoveTowards(transform.position, GoToPosition, 8f * Time.deltaTime * Mathf.Abs(diff));
             }
-
-            Vector3 screenPoint = touch.position;
-            screenPoint.z = Camera.main.transform.position.z - 0.5f;
-
-            dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
-
-            dummyPos.y = ballShooterPos.y;
-            dummyPos.z = 0.5f;
-
-
-            ballShooter.transform.position = Vector3.MoveTowards(ballShooter.transform.position, dummyPos, 15 * Time.deltaTime * Mathf.Abs(ballShooter.transform.position.x - dummyPos.x));
-
-
-
+            else
+            {
+                transform.position = GoToPosition;
+                SendBall();
+            }
         }
-#endregion
 
-        #region MouseControls
-        else if (Input.GetMouseButton(0) && !DataScript.isGamePaused && DataScript.ballCount > 0)
+        inputTimer += Time.deltaTime;
+        if (ExtendedInput.isInput() && inputTimer > timeBetweenInputs)
         {
-            Vector3 screenPoint = Input.mousePosition;
-            screenPoint.z = Camera.main.transform.position.z - 0.5f;
-
-            dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
-
-            dummyPos.y = ballShooterPos.y;
-            dummyPos.z = 0.5f;
-
-            ballShooter.transform.position = Vector3.MoveTowards(ballShooter.transform.position, dummyPos, 15 * Time.deltaTime * Mathf.Abs(ballShooter.transform.position.x - dummyPos.x));
-
-            uIScript.GameStarted();
-            if (!isCoroutineStarted)
-            {
-                StartCoroutine(SendBallsMouse());
-            }
-            
+            inputTimer = 0f;
+            ProcessNewInput();
         }
-        #endregion
+
         if (DataScript.ballCount == 0 && DataScript.gameOverLock)
         {
             GameObject[] ballsInScene = GameObject.FindGameObjectsWithTag("Ball");
-            
+
             if(ballsInScene == null)
             {
                 uIScript.GameOver();
@@ -99,9 +82,9 @@ public class BallCreator : MonoBehaviour
             {
                 bool isAnyBallMoving = false;
 
-                foreach (GameObject ball in ballsInScene)
+                foreach (GameObject b in ballsInScene)
                 {
-                    if (ball.GetComponent<Rigidbody>().velocity != Vector3.zero)
+                    if (!Mathf.Approximately(b.GetComponent<Rigidbody>().velocity.magnitude, 0f))
                     {
                         isAnyBallMoving = true;
                     }
@@ -117,75 +100,118 @@ public class BallCreator : MonoBehaviour
         
     }
 
-    public IEnumerator SendBallsTouch()
+    void ProcessNewInput()
     {
-        while(Input.touchCount > 0 && DataScript.ballCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            selectedBall = objectPooler.GetPooledObject(ballsList);
-            if (selectedBall != null)
-            {
+        Vector3 screenPoint = ExtendedInput.GetPoint();
+        screenPoint.z = Camera.main.transform.position.z - 0.5f;
 
-               
-                Vector3 screenPoint = touch.position;
-                screenPoint.z = Camera.main.transform.position.z - 0.5f;
+        dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
+        ShootEvent.Enqueue(dummyPos);
 
-                dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
+        dummyPos.y = ballShooterPos.y;
+        dummyPos.z = 0.5f;
 
-                if(dummyPos.y < DataScript.screenTopCenter.y - 5f)
-                {
-                    dummyPos.y = DataScript.screenTopCenter.y - 4f;
-                    dummyPos.z = 0.5f;
+        GoToPosition = dummyPos;
 
-                    DataScript.ballCount -= 1;
-                    counterScript.SetInGameBallCounter();
-
-
-                    selectedBall.transform.position = dummyPos;
-                    selectedBall.SetActive(true);
-                    selectedBall.GetComponent<Rigidbody>().velocity = new Vector3(0f, -12f, 0f);
-                }
-
-                
-            }
-            yield return new WaitForSecondsRealtime(0.15f);
-        }
+        uIScript.GameStarted();
     }
 
-
-    public IEnumerator SendBallsMouse()
+    void SendBall()
     {
-        isCoroutineStarted = true;
-        while (Input.GetMouseButton(0) && DataScript.ballCount > 0)
+        if (DataScript.ballCount > 0)
         {
             selectedBall = objectPooler.GetPooledObject(ballsList);
+
             if (selectedBall != null)
             {
+                Vector3 ballPos = ShootEvent.Dequeue();
+                Debug.Log("SendBall: Ball position is : " + ballPos);
 
-                
-                Vector3 screenPoint = Input.mousePosition;
-                screenPoint.z = Camera.main.transform.position.z - 0.5f;
-
-                dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
-
-                if(dummyPos.y <= DataScript.screenTopCenter.y-5f)
+                if (ballPos.y < DataScript.screenTopCenter.y - 5f)
                 {
-                    dummyPos.y = DataScript.screenTopCenter.y - 4f;
-                    dummyPos.z = 0.5f;
-
+                    ballPos.y = DataScript.screenTopCenter.y - 4f;
+                    ballPos.z = 0.5f;
 
                     DataScript.ballCount -= 1;
                     counterScript.SetInGameBallCounter();
-
-
-                    selectedBall.transform.position = dummyPos;
+                    selectedBall.transform.position = ballPos;
                     selectedBall.SetActive(true);
                     selectedBall.GetComponent<Rigidbody>().velocity = new Vector3(0f, -12f, 0f);
                 }
-                
+
+
             }
-            yield return new WaitForSecondsRealtime(0.15f);
         }
-        isCoroutineStarted = false;
     }
 }
+
+
+/*  public IEnumerator SendBallsTouch()
+  {
+      while(Input.touchCount > 0 && DataScript.ballCount > 0)
+      {
+          Touch touch = Input.GetTouch(0);
+          selectedBall = objectPooler.GetPooledObject(ballsList);
+          if (selectedBall != null)
+          {
+              Vector3 screenPoint = touch.position;
+              screenPoint.z = Camera.main.transform.position.z - 0.5f;
+
+              dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
+
+              if(dummyPos.y < DataScript.screenTopCenter.y - 5f)
+              {
+                  dummyPos.y = DataScript.screenTopCenter.y - 4f;
+                  dummyPos.z = 0.5f;
+
+                  DataScript.ballCount -= 1;
+                  counterScript.SetInGameBallCounter();
+
+
+                  selectedBall.transform.position = dummyPos;
+                  selectedBall.SetActive(true);
+                  selectedBall.GetComponent<Rigidbody>().velocity = new Vector3(0f, -12f, 0f);
+              }
+
+
+          }
+          yield return new WaitForSecondsRealtime(0.15f);
+      }
+  }
+
+
+  public IEnumerator SendBallsMouse()
+  {
+      isCoroutineStarted = true;
+      while (Input.GetMouseButton(0) && DataScript.ballCount > 0)
+      {
+          selectedBall = objectPooler.GetPooledObject(ballsList);
+          if (selectedBall != null)
+          {
+
+
+              Vector3 screenPoint = Input.mousePosition;
+              screenPoint.z = Camera.main.transform.position.z - 0.5f;
+
+              dummyPos = Camera.main.ScreenToWorldPoint(screenPoint);
+
+              if(dummyPos.y <= DataScript.screenTopCenter.y-5f)
+              {
+                  dummyPos.y = DataScript.screenTopCenter.y - 4f;
+                  dummyPos.z = 0.5f;
+
+
+                  DataScript.ballCount -= 1;
+                  counterScript.SetInGameBallCounter();
+
+
+                  selectedBall.transform.position = dummyPos;
+                  selectedBall.SetActive(true);
+                  selectedBall.GetComponent<Rigidbody>().velocity = new Vector3(0f, -12f, 0f);
+              }
+
+          }
+          yield return new WaitForSecondsRealtime(0.15f);
+      }
+      isCoroutineStarted = false;
+  }*/
